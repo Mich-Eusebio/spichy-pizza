@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { money, products } from './products';
-import { orderMessage, whatsappUrl } from './whatsapp';
+import { createOrderId, orderMessage, whatsappUrl } from './whatsapp';
 
 export default function OrderDialog({ ref, items, onRemove }) {
   const [soda, setSoda] = useState(false);
+  const orderId = useMemo(() => createOrderId(), [items, soda]);
   const entries = Object.entries(items);
   const total = entries.reduce((sum, [id, qty]) => sum + products[id].price * qty, 0);
 
@@ -32,7 +33,7 @@ export default function OrderDialog({ ref, items, onRemove }) {
       <div className="total"><span>Subtotal</span><span>{money(total)}</span></div>
       <p className="notice">Abriremos WhatsApp con tu pedido listo para enviar al 829 909 3939. Confirma el envío en el chat. Refrescos y cualquier cargo adicional se confirman con el negocio.</p>
       {entries.length > 0 ? (
-        <a className="button" style={{ width: '100%' }} href={whatsappUrl(orderMessage(items, soda))} target="_blank" rel="noopener noreferrer">Pedir por WhatsApp ↗</a>
+        <a className="button" style={{ width: '100%' }} href={whatsappUrl(orderMessage(items, soda, orderId))} target="_blank" rel="noopener noreferrer">Pedir por WhatsApp ↗</a>
       ) : (
         <button className="button" style={{ width: '100%' }} disabled>Agrega algo rico para pedir</button>
       )}

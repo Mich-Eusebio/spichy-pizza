@@ -1,5 +1,8 @@
 node_modules/
 .npm-cache/
+.tmp-pizza-review/
 dist/
 *.tar.gz
 .openai/.local/
+
+.vercel
